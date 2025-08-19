@@ -2,14 +2,16 @@
 
 namespace Database\Seeders;
 
-use App\Models\TipeKriteria;
-use Illuminate\Database\Seeder;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Database\Seeder;
 
-class KriteriaSeeder extends Seeder
+class SubKriteriaSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
-    public function run(): void {}
+    public function run(): void
+    {
+        //
+    }
 }

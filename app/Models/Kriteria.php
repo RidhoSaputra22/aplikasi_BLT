@@ -11,13 +11,17 @@ class Kriteria extends Model
     use HasFactory;
     protected $fillable = [
         'nama_kriteria',
-        'bobot',
         'tipe',
         'kode',
     ];
 
-    public function penilaians()
+    public function penilaian()
     {
         return $this->hasMany(Penilaian::class);
+    }
+
+    public function subKriteria()
+    {
+        return $this->hasMany(SubKriteria::class);
     }
 }

@@ -21,7 +21,6 @@ class KriteriaFactory extends Factory
             'kode' => 'C' . $this->faker->unique()->randomDigitNotNull(),
             'nama_kriteria' => $this->faker->randomElement(['Penghasilan', 'Tanggungan', 'Status Rumah', 'Pendidikan']),
             'tipe' => $this->faker->randomElement(['Benefit', 'Cost']),
-            'bobot' => $this->faker->randomFloat(2, 0.1, 0.5),
         ];
     }
 }

@@ -2,16 +2,17 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\PenilaianResource\Pages;
-use App\Filament\Resources\PenilaianResource\RelationManagers;
-use App\Models\Penilaian;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Forms\Form;
+use App\Models\Penilaian;
 use Filament\Tables\Table;
+use App\Models\SubKriteria;
+use Filament\Resources\Resource;
 use Illuminate\Database\Eloquent\Builder;
+use App\Filament\Resources\PenilaianResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\PenilaianResource\RelationManagers;
 
 class PenilaianResource extends Resource
 {
@@ -27,31 +28,50 @@ class PenilaianResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('calon_penerima_id')
+                Forms\Components\Select::make('calon_penerima_id')
+                    ->relationship('calonPenerima', 'nama')
+                    ->native(false)
+                    ->preload()
+                    ->searchable()
+                    ->label('Nama Calon Penerima'),
+                Forms\Components\Select::make('kriteria_id')
                     ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('kriteria_id')
+                    ->native(false)
+                    ->preload()
+                    ->searchable()
+                    ->relationship('kriteria', 'nama_kriteria')
+                    ->reactive(),
+                Forms\Components\Select::make('sub_kriteria_id')
                     ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('nilai')
-                    ->required()
-                    ->numeric(),
+                    ->native(false)
+                    ->reactive()
+                    ->disabled(fn(callable $get) => !$get('kriteria_id'))
+                    ->options(function (callable $get) {
+                        // return dd(SubKriteria::where('kriteria_id', $get('kriteria_id'))
+                        //     ->pluck('nama_sub_kriteria', 'id'));
+                        return (SubKriteria::where('kriteria_id', $get('kriteria_id'))
+                            ->pluck('nama_sub_kriteria', 'id'));
+                    })
+                    ->label('Sub Kriteria'),
             ]);
     }
 
     public static function table(Table $table): Table
     {
         return $table
-            ->query(
-                Penilaian::with('calon_penerima', 'kriteria')
-            )
             ->columns([
-
+                Tables\Columns\TextColumn::make('calonPenerima.nama')
+                    ->sortable()
+                    ->searchable()
+                    ->label('Nama Calon Penerima'),
                 Tables\Columns\TextColumn::make('kriteria.nama_kriteria')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('nilai')
-                    ->numeric()
+                Tables\Columns\TextColumn::make('subKriteria.nama_sub_kriteria')
+                    ->label('Sub Kriteria')
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('subKriteria.bobot')
+                    ->label('Bobot')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
@@ -62,13 +82,27 @@ class PenilaianResource extends Resource
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
+
             ->groups([
                 'calon_penerima.nama',
             ])
-            ->defaultGroup('calon_penerima.nama')
             ->filters([
                 //
-            ])
+                Tables\Filters\SelectFilter::make('calon_penerima_id')
+                    ->relationship('calonPenerima', 'nama')
+                    ->label('Nama Calon Penerima')
+                    ->default()
+                    ->native(false)
+                    ->preload()
+                    ->searchable(),
+
+                Tables\Filters\SelectFilter::make('kriteria_id')
+                    ->relationship('kriteria', 'nama_kriteria')
+                    ->native(false)
+                    ->preload()
+                    ->searchable(),
+            ], layout: Tables\Enums\FiltersLayout::AboveContent)
+            ->filtersFormColumns(3)
             ->actions([
                 Tables\Actions\EditAction::make(),
             ])

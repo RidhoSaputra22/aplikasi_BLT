@@ -20,7 +20,6 @@ class PenilaianFactory extends Factory
             //
             'calon_penerima_id' => \App\Models\CalonPenerima::factory(),
             'kriteria_id' => \App\Models\Kriteria::factory(),
-            'nilai' => $this->faker->numberBetween(1, 10),
         ];
     }
 }

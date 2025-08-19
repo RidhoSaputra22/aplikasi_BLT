@@ -2,10 +2,12 @@
 
 namespace App\Filament\Resources\HasilPsiResource\Pages;
 
-use App\Filament\Resources\HasilPsiResource;
 use App\Models\HasilPsi;
 use Filament\Actions\Action;
+use Illuminate\Support\Facades\Artisan;
+use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ListRecords;
+use App\Filament\Resources\HasilPsiResource;
 
 class ListHasilPsis extends ListRecords
 {
@@ -18,8 +20,18 @@ class ListHasilPsis extends ListRecords
                 ->icon('heroicon-s-calculator')
                 ->color('primary')
                 ->action(function () {
-                    HasilPsi::calculate();
-                })
+                    Artisan::call('psi:hitung');
+                    Notification::make()
+                        ->title('Perhitungan PSI Selesai')
+                        ->success()
+                        ->send();
+                }),
+
+            Action::make('Lihat Laporan')
+                ->icon('heroicon-s-calculator')
+                ->color('primary')
+                ->url(route('laporan.psi'))
+                ->openUrlInNewTab()
         ];
     }
 }

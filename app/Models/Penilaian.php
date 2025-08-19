@@ -12,16 +12,21 @@ class Penilaian extends Model
     protected $fillable = [
         'calon_penerima_id',
         'kriteria_id',
-        'nilai',
+        'sub_kriteria_id',
     ];
 
-    public function calon_penerima()
+    public function calonPenerima()
     {
-        return $this->belongsTo(CalonPenerima::class);
+        return $this->belongsTo(CalonPenerima::class, 'calon_penerima_id', 'id');
     }
 
     public function kriteria()
     {
         return $this->belongsTo(Kriteria::class);
+    }
+
+    public function subKriteria()
+    {
+        return $this->belongsTo(SubKriteria::class, 'sub_kriteria_id', 'id');
     }
 }

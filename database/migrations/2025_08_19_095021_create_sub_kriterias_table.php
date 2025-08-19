@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('kriterias', function (Blueprint $table) {
+        Schema::create('sub_kriterias', function (Blueprint $table) {
             $table->id();
-            $table->string('kode')->unique(); // contoh: C1, C2
-            $table->string('nama_kriteria');
-            $table->enum('tipe', ['Benefit', 'Cost']); // Benefit = makin besar makin baik, Cost = makin kecil makin baik
+            $table->foreignId('kriteria_id')->constrained('kriterias')->onDelete('cascade');
+            $table->string('nama_sub_kriteria');
+            $table->float('bobot');
             $table->timestamps();
         });
     }
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('kriterias');
+        Schema::dropIfExists('sub_kriterias');
     }
 };

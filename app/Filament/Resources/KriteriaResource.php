@@ -4,7 +4,9 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\KriteriaResource\Pages;
 use App\Filament\Resources\KriteriaResource\RelationManagers;
+use App\Filament\Resources\KriteriaResource\RelationManagers\SubKriteriaRelationManager;
 use App\Models\Kriteria;
+use App\Models\TipeKriteria;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -22,7 +24,7 @@ class KriteriaResource extends Resource
     protected static ?string $pluralLabel = 'Kriteria Penerima BLT';
     protected static ?string $singularLabel = 'Kriteria Penerima BLT';
 
-    protected static ?string $navigationGroup = 'PSI (Preference Selection Index)';
+    protected static ?string $navigationGroup = 'Kriteria';
 
 
     public static function getNavigationBadge(): ?string
@@ -40,24 +42,30 @@ class KriteriaResource extends Resource
                 Forms\Components\TextInput::make('nama_kriteria')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('tipe')
-                    ->required(),
-                Forms\Components\TextInput::make('bobot')
+                Forms\Components\Select::make('tipe')
                     ->required()
-                    ->numeric(),
+                    ->options([
+                        'Cost' => 'Cost',
+                        'Benefit' => 'Benefit'
+                    ]),
+
             ]);
     }
 
     public static function table(Table $table): Table
     {
         return $table
+            ->query(
+                Kriteria::withCount('subKriterias')->orderBy('kode')
+            )
             ->columns([
                 Tables\Columns\TextColumn::make('kode')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('nama_kriteria')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('tipe'),
-                Tables\Columns\TextColumn::make('bobot')
+                Tables\Columns\TextColumn::make('sub_kriterias_count')
+                    ->label('Jumlah Sub Kriteria')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
@@ -86,6 +94,7 @@ class KriteriaResource extends Resource
     {
         return [
             //
+            SubKriteriaRelationManager::class,
         ];
     }
 

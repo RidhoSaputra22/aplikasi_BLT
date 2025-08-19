@@ -2,26 +2,27 @@
 
 namespace App\Providers\Filament;
 
-use App\Filament\Resources\DashboardResource\Widgets\HasilPsiWidget;
-use App\Filament\Resources\CalonPenerimaResource\Widgets\BanyakCalon;
-use App\Filament\Resources\DashboardResource\Widgets\DashboardStats;
-use App\Filament\Resources\HasilPsiResource\Widgets\Layak;
-use App\Filament\Resources\HasilPsiResource\Widgets\TidakLayak;
-use Filament\Http\Middleware\Authenticate;
-use Filament\Http\Middleware\AuthenticateSession;
-use Filament\Http\Middleware\DisableBladeIconComponents;
-use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Filament\Pages;
 use Filament\Panel;
+use Filament\Widgets;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
-use Filament\Widgets;
-use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
-use Illuminate\Cookie\Middleware\EncryptCookies;
-use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
-use Illuminate\Routing\Middleware\SubstituteBindings;
+use App\Filament\Pages\Auth\EditProfile;
+use Filament\Http\Middleware\Authenticate;
 use Illuminate\Session\Middleware\StartSession;
+use Illuminate\Cookie\Middleware\EncryptCookies;
+use Filament\Http\Middleware\AuthenticateSession;
+use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Filament\Http\Middleware\DisableBladeIconComponents;
+use App\Filament\Resources\HasilPsiResource\Widgets\Layak;
+use Filament\Http\Middleware\DispatchServingFilamentEvent;
+use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
+use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
+use App\Filament\Resources\HasilPsiResource\Widgets\TidakLayak;
+use App\Filament\Resources\DashboardResource\Widgets\DashboardStats;
+use App\Filament\Resources\DashboardResource\Widgets\HasilPsiWidget;
+use App\Filament\Resources\CalonPenerimaResource\Widgets\BanyakCalon;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -31,6 +32,7 @@ class AdminPanelProvider extends PanelProvider
             ->default()
             ->id('admin')
             ->path('admin')
+            ->profile(isSimple: false, page: EditProfile::class)
             ->login()
             ->colors([
                 'primary' => Color::Amber,

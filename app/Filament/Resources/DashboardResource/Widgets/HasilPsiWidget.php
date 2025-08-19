@@ -2,15 +2,18 @@
 
 namespace App\Filament\Resources\DashboardResource\Widgets;
 
-use App\Models\calon_penerima;
+use Filament\Tables;
 use App\Models\HasilPsi;
 use App\Models\Kriteria;
 use App\Models\Penilaian;
-use Filament\Tables;
 use Filament\Tables\Table;
-use Filament\Widgets\TableWidget as BaseWidget;
+use App\Models\CalonPenerima;
+use App\Models\calon_penerima;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Artisan;
+use Filament\Notifications\Notification;
+use Filament\Widgets\TableWidget as BaseWidget;
 
 class HasilPsiWidget extends BaseWidget
 {
@@ -20,14 +23,17 @@ class HasilPsiWidget extends BaseWidget
 
     public function table(Table $table): Table
     {
-
         return $table
             ->headerActions([
                 Tables\Actions\Action::make('Hitung Psi')
                     ->icon('heroicon-s-calculator')
                     ->color('primary')
                     ->action(function () {
-                        HasilPsi::calculate();
+                        Artisan::call('psi:hitung');
+                        Notification::make()
+                            ->title('Perhitungan PSI Selesai')
+                            ->success()
+                            ->send();
                     })
             ])
             ->query(
@@ -44,7 +50,9 @@ class HasilPsiWidget extends BaseWidget
                     ->sortable()
                     ->numeric(4),
 
-                Tables\Columns\BadgeColumn::make('status')
+                Tables\Columns\TextColumn::make('status')
+                    ->label('Status')
+                    ->badge(fn($record) => $record->status)
                     ->colors([
                         'success' => 'Layak',
                         'danger' => 'Tidak Layak',
@@ -54,6 +62,32 @@ class HasilPsiWidget extends BaseWidget
                 Tables\Columns\TextColumn::make('periode')
                     ->label('Periode')
                     ->sortable(),
-            ]);
+            ])
+            ->filters([
+                Tables\Filters\SelectFilter::make('periode')
+                    ->options(
+                        HasilPsi::distinct()->pluck('periode', 'periode')->toArray()
+                    )
+                    ->native(false)
+                    ->placeholder('Semua Periode'),
+                Tables\Filters\SelectFilter::make('status')
+                    ->options(
+                        HasilPsi::distinct()->pluck('status', 'status')->toArray()
+                    )
+                    ->native(false)
+                    ->placeholder('Semua Status'),
+                Tables\Filters\SelectFilter::make('calon_penerima_id')
+                    ->options(
+                        CalonPenerima::orderBy('nama')
+                            ->pluck('nama', 'id')
+                            ->toArray()
+                    )
+                    ->native(false)
+                    ->label('Calon Penerima')
+                    ->placeholder('Semua Calon Penerima'),
+
+            ], layout: Tables\Enums\FiltersLayout::AboveContent)
+            ->filtersFormColumns(3)
+        ;
     }
 }

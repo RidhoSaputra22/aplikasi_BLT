@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('calon_penerima_id')->constrained('calon_penerimas')->onDelete('cascade');
             $table->foreignId('kriteria_id')->constrained('kriterias')->onDelete('cascade');
-            $table->float('nilai'); // contoh: 1,000,000 (penghasilan), atau 4 (jumlah tanggungan)
+            $table->foreignId('sub_kriteria_id')->constrained('sub_kriterias')->onDelete('cascade');
             $table->timestamps();
         });
     }
