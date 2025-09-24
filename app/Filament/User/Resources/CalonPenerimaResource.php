@@ -107,7 +107,6 @@ class CalonPenerimaResource extends Resource
     {
         return [
             //
-            PenilaianRelationManager::class
         ];
     }
 
