@@ -4,11 +4,12 @@ namespace Database\Seeders;
 
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Admin;
 use App\Models\Kriteria;
+use App\Models\Penilaian;
 use App\Models\SubKriteria;
 use App\Models\TipeKriteria;
 use App\Models\CalonPenerima;
-use App\Models\Penilaian;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
@@ -21,11 +22,16 @@ class DatabaseSeeder extends Seeder
     {
 
         User::factory()->create([
+            'name' => 'user',
+            'email' => 'user@gmail.com',
+            'password' => Hash::make('user'),
+        ]);
+
+        Admin::factory()->create([
             'name' => 'admin',
             'email' => 'admin@gmail.com',
             'password' => Hash::make('admin'),
         ]);
-
 
         $dataKriteria = [
             [
@@ -304,5 +310,11 @@ class DatabaseSeeder extends Seeder
                 ]);
             }
         }
+
+        CalonPenerima::factory(50)->create()->each(function ($calon) {
+            $calon->penilaian()->saveMany(
+                Penilaian::factory(5)->make()
+            );
+        });
     }
 }

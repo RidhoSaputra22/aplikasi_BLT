@@ -56,7 +56,7 @@ class KriteriaResource extends Resource
     {
         return $table
             ->query(
-                Kriteria::withCount('subKriterias')->orderBy('kode')
+                Kriteria::withCount('subKriteria')->orderBy('kode')
             )
             ->columns([
                 Tables\Columns\TextColumn::make('kode')

@@ -6,6 +6,7 @@ use Illuminate\Console\Command;
 use App\Models\Penilaian;
 use App\Models\SubKriteria;
 use App\Models\HasilPsi;
+use Illuminate\Support\Facades\DB;
 
 class HitungPSI extends Command
 {
@@ -14,6 +15,9 @@ class HitungPSI extends Command
 
     public function handle()
     {
+        // Hapus hasil PSI sebelumnya untuk periode ini
+        DB::table('hasil_psis')->where('periode', now()->format('Y-m'))->delete();
+
         $periode = now()->format('Y-m');
         HasilPsi::where('periode', $periode)->delete();
 

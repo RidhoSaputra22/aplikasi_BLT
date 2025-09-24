@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Models\Admin;
 use App\Models\CalonPenerima;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
@@ -11,7 +12,7 @@ class CalonPenerimaPolicy
     /**
      * Determine whether the user can view any models.
      */
-    public function viewAny(User $user): bool
+    public function viewAny(User | Admin $user): bool
     {
         return true;
     }
@@ -19,7 +20,7 @@ class CalonPenerimaPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, CalonPenerima $calonPenerima): bool
+    public function view(User | Admin $user, CalonPenerima $calonPenerima): bool
     {
         return true;
     }
@@ -27,7 +28,7 @@ class CalonPenerimaPolicy
     /**
      * Determine whether the user can create models.
      */
-    public function create(User $user): bool
+    public function create(User | Admin $user): bool
     {
         return true;
     }
@@ -35,7 +36,7 @@ class CalonPenerimaPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, CalonPenerima $calonPenerima): bool
+    public function update(User | Admin $user, CalonPenerima $calonPenerima): bool
     {
         return true;
     }
@@ -43,7 +44,7 @@ class CalonPenerimaPolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, CalonPenerima $calonPenerima): bool
+    public function delete(User | Admin $user, CalonPenerima $calonPenerima): bool
     {
         return true;
     }
@@ -51,7 +52,7 @@ class CalonPenerimaPolicy
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, CalonPenerima $calonPenerima): bool
+    public function restore(User | Admin $user, CalonPenerima $calonPenerima): bool
     {
         return true;
     }
@@ -59,7 +60,7 @@ class CalonPenerimaPolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, CalonPenerima $calonPenerima): bool
+    public function forceDelete(User | Admin $user, CalonPenerima $calonPenerima): bool
     {
         return true;
     }

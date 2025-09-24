@@ -16,10 +16,13 @@ class PenilaianFactory extends Factory
      */
     public function definition(): array
     {
+        $kriteriaIds = \App\Models\Kriteria::pluck('id')->random();
+
         return [
             //
             'calon_penerima_id' => \App\Models\CalonPenerima::factory(),
-            'kriteria_id' => \App\Models\Kriteria::factory(),
+            'kriteria_id' => $kriteriaIds,
+            'sub_kriteria_id' => \App\Models\SubKriteria::where('kriteria_id', $kriteriaIds)->pluck('id')->random()
         ];
     }
 }

@@ -23,6 +23,7 @@ use App\Filament\Resources\HasilPsiResource\Widgets\TidakLayak;
 use App\Filament\Resources\DashboardResource\Widgets\DashboardStats;
 use App\Filament\Resources\DashboardResource\Widgets\HasilPsiWidget;
 use App\Filament\Resources\CalonPenerimaResource\Widgets\BanyakCalon;
+use EightyNine\Reports\ReportsPlugin;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -32,6 +33,7 @@ class AdminPanelProvider extends PanelProvider
             ->default()
             ->id('admin')
             ->path('admin')
+            ->authGuard('admin')
             ->profile(isSimple: false, page: EditProfile::class)
             ->login()
             ->colors([
@@ -60,6 +62,7 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
-            ]);
+            ])
+            ->spa();
     }
 }

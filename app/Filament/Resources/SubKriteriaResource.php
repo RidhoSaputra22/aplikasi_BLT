@@ -48,6 +48,10 @@ class SubKriteriaResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('id')
+                    ->numeric()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('nama_sub_kriteria')
                     ->label('Sub Kriteria')
                     ->searchable(),

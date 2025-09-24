@@ -2,8 +2,9 @@
 
 namespace App\Policies;
 
-use App\Models\Penilaian;
 use App\Models\User;
+use App\Models\Admin;
+use App\Models\Penilaian;
 use Illuminate\Auth\Access\Response;
 
 class PenilaianPolicy
@@ -11,7 +12,7 @@ class PenilaianPolicy
     /**
      * Determine whether the user can view any models.
      */
-    public function viewAny(User $user): bool
+    public function viewAny(User | Admin $user): bool
     {
         return true;
     }
@@ -19,7 +20,7 @@ class PenilaianPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Penilaian $penilaian): bool
+    public function view(User | Admin $user, Penilaian $penilaian): bool
     {
         return true;
     }
@@ -27,7 +28,7 @@ class PenilaianPolicy
     /**
      * Determine whether the user can create models.
      */
-    public function create(User $user): bool
+    public function create(User | Admin $user): bool
     {
         return true;
     }
@@ -35,7 +36,7 @@ class PenilaianPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Penilaian $penilaian): bool
+    public function update(User | Admin $user, Penilaian $penilaian): bool
     {
         return true;
     }
@@ -43,7 +44,7 @@ class PenilaianPolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Penilaian $penilaian): bool
+    public function delete(User | Admin $user, Penilaian $penilaian): bool
     {
         return true;
     }
@@ -51,7 +52,7 @@ class PenilaianPolicy
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, Penilaian $penilaian): bool
+    public function restore(User | Admin $user, Penilaian $penilaian): bool
     {
         return true;
     }
@@ -59,7 +60,7 @@ class PenilaianPolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, Penilaian $penilaian): bool
+    public function forceDelete(User | Admin $user, Penilaian $penilaian): bool
     {
         return true;
     }

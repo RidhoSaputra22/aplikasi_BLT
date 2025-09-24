@@ -34,7 +34,12 @@ class HasilPsiWidget extends BaseWidget
                             ->title('Perhitungan PSI Selesai')
                             ->success()
                             ->send();
-                    })
+                    }),
+                Tables\Actions\Action::make('Lihat Laporan')
+                    ->icon('heroicon-s-calculator')
+                    ->color('primary')
+                    ->url(route('laporan.psi'))
+                    ->openUrlInNewTab(),
             ])
             ->query(
                 HasilPsi::with('calon_penerima')->orderByDesc('nilai_preferensi')
@@ -44,12 +49,10 @@ class HasilPsiWidget extends BaseWidget
                     ->label('Nama Calon')
                     ->searchable()
                     ->sortable(),
-
                 Tables\Columns\TextColumn::make('nilai_preferensi')
                     ->label('Skor Preferensi')
                     ->sortable()
                     ->numeric(4),
-
                 Tables\Columns\TextColumn::make('status')
                     ->label('Status')
                     ->badge(fn($record) => $record->status)
@@ -58,7 +61,6 @@ class HasilPsiWidget extends BaseWidget
                         'danger' => 'Tidak Layak',
                     ])
                     ->sortable(),
-
                 Tables\Columns\TextColumn::make('periode')
                     ->label('Periode')
                     ->sortable(),
