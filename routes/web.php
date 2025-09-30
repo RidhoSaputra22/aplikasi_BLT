@@ -12,5 +12,4 @@ Route::get('/', function () {
 });
 
 Route::get('/laporan/psi/pdf', [HasilPsiController::class, 'generatePdf'])
-    ->middleware(['auth']) // gunakan guard 'filament' jika sudah ada
     ->name('laporan.psi');

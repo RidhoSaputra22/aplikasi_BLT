@@ -18,8 +18,8 @@ return new class extends Migration
             $table->text('alamat');
             $table->string('no_kk');
             $table->string('desa');
-            $table->string('kecamatan');
-            $table->string('kabupaten');
+            $table->string('kecamatan')->nullable();
+            $table->string('kabupaten')->nullable();
             $table->date('tanggal_input')->nullable();
             $table->timestamps();
         });

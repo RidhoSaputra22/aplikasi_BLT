@@ -38,8 +38,12 @@ class CalonPenerimaResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('nik')
+                    ->label('NIK')
                     ->required()
-                    ->maxLength(255),
+                    ->maxLength(16)
+                    ->minLength(16)
+                    ->numeric()
+                    ->rule('digits:16'),
                 Forms\Components\TextInput::make('nama')
                     ->required()
                     ->maxLength(255),
@@ -47,15 +51,10 @@ class CalonPenerimaResource extends Resource
                     ->required()
                     ->columnSpanFull(),
                 Forms\Components\TextInput::make('no_kk')
+                    ->label('NO KK')
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('desa')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('kecamatan')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('kabupaten')
                     ->required()
                     ->maxLength(255),
                 Forms\Components\DatePicker::make('tanggal_input'),
