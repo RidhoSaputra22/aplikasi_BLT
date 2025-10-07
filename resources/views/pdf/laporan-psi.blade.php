@@ -49,7 +49,7 @@
             @endphp
             <div class="grid grid-cols-2 gap-4 text-sm">
                 <div>
-                    <p>Total Desa: <strong>{{ $totalDesa }}</strong></p>
+                    <p>Total Dusun: <strong>{{ $totalDesa }}</strong></p>
                     <p>Total Calon Penerima: <strong>{{ $totalCalonPenerima }}</strong></p>
                 </div>
                 <div>
