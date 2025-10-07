@@ -24,10 +24,7 @@ class UserResource extends Resource
     protected static ?string $navigationGroup = 'Petugas';
 
 
-    public static function getNavigationBadge(): ?string
-    {
-        return static::getModel()::count();
-    }
+
 
     public static function form(Form $form): Form
     {

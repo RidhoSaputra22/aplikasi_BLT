@@ -36,6 +36,7 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->authGuard('admin')
+            ->brandLogo(fn() => view('admin.logo'))
             ->profile(isSimple: false, page: EditProfile::class)
             ->login()
             ->darkMode(false)
@@ -117,26 +118,12 @@ class AdminPanelProvider extends PanelProvider
                 .fi-sidebar-item-button:hover:not(.bg-gray-100):not([aria-current]):not([data-active="true"]) .fi-sidebar-item-icon {
                     color: #f9fafb !important;
                 }
-
-                /* Sidebar header */
-                .fi-sidebar-header { background-color: #047857 !important; }
-
-                /* Top bar */
-                .fi-topbar { background-color: #10b981 !important; }
-                .fi-topbar .fi-application-name { color: white !important; }
-                .fi-topbar .fi-user-menu-trigger { color: white !important; }
-
                 /* Other sidebar elements */
-                .fi-logo { filter: invert(1) !important; }
                 .fi-sidebar-group-label { color: white !important; font-weight: 500 !important; }
                 .fi-sidebar-collapse-button { color: white !important; }
                 .fi-sidebar-collapse-button:hover { background-color: #047857 !important; }
 
-                /* Badge styling */
-                .fi-sidebar .fi-badge {
-                    background-color: rgba(255, 255, 255, 0.2) !important;
-                    color: white !important;
-                }
+
             </style>')
         );
     }

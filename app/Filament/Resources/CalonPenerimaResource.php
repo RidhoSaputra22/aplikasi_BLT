@@ -26,10 +26,7 @@ class CalonPenerimaResource extends Resource
     protected static ?int $sort = 1;
 
 
-    public static function getNavigationBadge(): ?string
-    {
-        return static::getModel()::count();
-    }
+
 
 
 
@@ -55,6 +52,7 @@ class CalonPenerimaResource extends Resource
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('desa')
+                    ->label('Dusun')
                     ->required()
                     ->maxLength(255),
                 Forms\Components\DatePicker::make('tanggal_input'),
@@ -72,6 +70,7 @@ class CalonPenerimaResource extends Resource
                 Tables\Columns\TextColumn::make('no_kk')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('desa')
+                    ->label('Dusun')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('kecamatan')
                     ->searchable(),
