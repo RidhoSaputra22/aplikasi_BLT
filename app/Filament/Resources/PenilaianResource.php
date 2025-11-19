@@ -8,6 +8,7 @@ use Filament\Forms\Form;
 use App\Models\Penilaian;
 use Filament\Tables\Table;
 use App\Models\SubKriteria;
+use App\Models\CalonPenerima;
 use Filament\Resources\Resource;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\PenilaianResource\Pages;
@@ -28,8 +29,19 @@ class PenilaianResource extends Resource
     {
         return $form
             ->schema([
+                Forms\Components\Select::make('dusun')
+                    ->options(CalonPenerima::pluck('desa', 'desa')->unique())
+                    ->native(false)
+                    ->preload()
+                    ->label('Dusun'),
                 Forms\Components\Select::make('calon_penerima_id')
-                    ->relationship('calonPenerima', 'nama')
+                    ->options(function (callable $get) {
+                        $dusun = $get('dusun');
+                        if ($dusun) {
+                            return CalonPenerima::where('desa', $dusun)->pluck('nama', 'id');
+                        }
+                        return CalonPenerima::pluck('nama', 'id');
+                    })
                     ->native(false)
                     ->preload()
                     ->searchable()
