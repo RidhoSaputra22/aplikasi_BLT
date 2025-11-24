@@ -43,21 +43,34 @@ class CalonPenerimaResource extends Resource
                     ->maxLength(16)
                     ->minLength(16)
                     ->numeric()
+                    ->unique(ignoreRecord: true)
                     ->rule('digits:16'),
                 Forms\Components\TextInput::make('nama')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\Textarea::make('alamat')
+                Forms\Components\Select::make('alamat')
+                    ->options([
+                        'Desa Lawaki Jaya' => 'Desa Lawaki Jaya',
+                    ])
                     ->required()
                     ->columnSpanFull(),
                 Forms\Components\TextInput::make('no_kk')
                     ->label('NO KK')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('desa')
+                Forms\Components\Select::make('desa')
+                    ->label('Dusun')
+                    ->options([
+                        '1' => '1',
+                        '2' => '2',
+                        '3' => '3',
+                        '4' => '4',
+                    ])
+                    ->required(),
+                Forms\Components\DatePicker::make('tanggal_input')
+                    ->label('Tanggal Input')
                     ->required()
-                    ->maxLength(255),
-                Forms\Components\DatePicker::make('tanggal_input'),
+                    ->default(now()),
             ]);
     }
 

@@ -94,10 +94,6 @@ class PenilaianResource extends Resource
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
-
-            ->groups([
-                'calon_penerima.nama',
-            ])
             ->filters([
                 //
                 Tables\Filters\SelectFilter::make('calon_penerima_id')
