@@ -8,6 +8,7 @@ use Filament\Forms\Form;
 use Filament\Tables\Table;
 use App\Models\CalonPenerima;
 use Filament\Resources\Resource;
+use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\User\Resources\CalonPenerimaResource\Pages;
@@ -104,7 +105,15 @@ class CalonPenerimaResource extends Resource
             ])
             ->filters([
                 //
-            ])
+                SelectFilter::make('desa')
+                    ->label('Dusun')
+                    ->options(
+                        CalonPenerima::query()
+                            ->distinct()
+                            ->pluck('desa', 'desa')
+                            ->toArray()
+                    ),
+            ], layout: Tables\Enums\FiltersLayout::AboveContent)
             ->actions([
                 Tables\Actions\EditAction::make(),
             ])

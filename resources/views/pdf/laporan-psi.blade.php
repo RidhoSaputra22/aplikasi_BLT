@@ -77,7 +77,7 @@
                                 <th class="py-2 px-4 font-semibold border border-gray-300">Nama Calon Penerima</th>
                                 <th class="py-2 px-4 font-semibold border border-gray-300">Nilai Preferensi</th>
                                 <th class="py-2 px-4 font-semibold border border-gray-300">Status</th>
-                                <th class="py-2 px-4 font-semibold border border-gray-300">Periode</th>
+                                <th class="py-2 px-4 font-semibold border border-gray-300 w-32">Periode</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-200">

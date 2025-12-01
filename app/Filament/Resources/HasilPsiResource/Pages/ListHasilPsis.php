@@ -4,6 +4,7 @@ namespace App\Filament\Resources\HasilPsiResource\Pages;
 
 use App\Models\HasilPsi;
 use Filament\Actions\Action;
+use Filament\Forms\Components\Select;
 use Illuminate\Support\Facades\Artisan;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ListRecords;
@@ -28,9 +29,27 @@ class ListHasilPsis extends ListRecords
                 }),
 
             Action::make('Lihat Laporan')
-                ->icon('heroicon-s-calculator')
+                ->icon('heroicon-s-document-text')
                 ->color('primary')
-                ->url(route('laporan.psi'))
+                ->modalHeading('Laporan Hasil Perhitungan PSI')
+                ->modalDescription('Pilih dusun untuk melihat laporan hasil perhitungan PSI.')
+                ->form([
+                    Select::make('dusun')
+                        ->label('Dusun')
+                        ->options(
+                            HasilPsi::with('calon_penerima')
+                                ->get()
+                                ->pluck('calon_penerima.desa', 'calon_penerima.desa')
+                                ->unique()
+                                ->toArray()
+                        )
+                        ->required(),
+                ])
+                ->action(function ($data) {
+                    $dusun = $data['dusun'];
+                    $url = route('laporan.psi', ['dusun' => $dusun]);
+                    return redirect($url);
+                })
                 ->openUrlInNewTab()
         ];
     }

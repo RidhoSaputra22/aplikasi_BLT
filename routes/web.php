@@ -11,5 +11,5 @@ Route::get('/', function () {
     return redirect('/admin/login');
 });
 
-Route::get('/laporan/psi/pdf', [HasilPsiController::class, 'generatePdf'])
+Route::get('/laporan/psi/pdf/{dusun}', [HasilPsiController::class, 'generatePdf'])
     ->name('laporan.psi');

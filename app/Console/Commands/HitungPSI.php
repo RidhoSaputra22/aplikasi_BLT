@@ -18,7 +18,7 @@ class HitungPSI extends Command
         // Hapus hasil PSI sebelumnya untuk periode ini
         DB::table('hasil_psis')->where('periode', now()->format('Y-m'))->delete();
 
-        $periode = now()->format('Y-m');
+        $periode = now();
         HasilPsi::where('periode', $periode)->delete();
 
         // Ambil semua penilaian

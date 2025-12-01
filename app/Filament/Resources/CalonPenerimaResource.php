@@ -2,17 +2,18 @@
 
 namespace App\Filament\Resources;
 
+use Filament\Forms;
+use Filament\Tables;
+use Filament\Forms\Form;
+use Filament\Tables\Table;
+use App\Models\CalonPenerima;
+use Filament\Resources\Resource;
+use Filament\Tables\Filters\SelectFilter;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\CalonPenerimaResource\Pages;
 use App\Filament\Resources\CalonPenerimaResource\RelationManagers;
 use App\Filament\Resources\CalonPenerimaResource\RelationManagers\PenilaianRelationManager;
-use App\Models\CalonPenerima;
-use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
-use Filament\Tables;
-use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class CalonPenerimaResource extends Resource
 {
@@ -102,7 +103,15 @@ class CalonPenerimaResource extends Resource
             ])
             ->filters([
                 //
-            ])
+                SelectFilter::make('desa')
+                    ->label('Dusun')
+                    ->options(
+                        CalonPenerima::query()
+                            ->distinct()
+                            ->pluck('desa', 'desa')
+                            ->toArray()
+                    ),
+            ], layout: Tables\Enums\FiltersLayout::AboveContent)
             ->actions([
                 Tables\Actions\EditAction::make(),
             ])
