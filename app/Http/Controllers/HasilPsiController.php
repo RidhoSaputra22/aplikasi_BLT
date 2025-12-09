@@ -19,9 +19,13 @@ class HasilPsiController extends Controller
 
         // Logic to generate PDF report
         // Ambil semua hasil PSI dengan relasi calon_penerima
-        $hasilPsiData = HasilPsi::with('calon_penerima')->whereHas('calon_penerima', function ($query) use ($dusun) {
-            $query->where('desa', $dusun);
-        })->get();
+        if ($dusun == 'Semua') {
+            $hasilPsiData = HasilPsi::with('calon_penerima')->get();
+        } else {
+            $hasilPsiData = HasilPsi::with('calon_penerima')->whereHas('calon_penerima', function ($query) use ($dusun) {
+                $query->where('desa', $dusun);
+            })->get();
+        }
         // Pisahkan data berdasarkan desa
         $hasilPsi = $hasilPsiData->groupBy('calon_penerima.desa');
         return Pdf::view('pdf.laporan-psi', compact('hasilPsi'))

@@ -16,6 +16,15 @@ class ListHasilPsis extends ListRecords
 
     protected function getHeaderActions(): array
     {
+
+        $opsiLaporan =  HasilPsi::with('calon_penerima')
+            ->get()
+            ->pluck('calon_penerima.desa', 'calon_penerima.desa')
+            ->unique()
+            ->toArray();
+        // tambah lihat semua
+        $opsiLaporan['Semua'] = 'Semua';
+
         return [
             Action::make('Hitung Psi')
                 ->icon('heroicon-s-calculator')
@@ -37,11 +46,7 @@ class ListHasilPsis extends ListRecords
                     Select::make('dusun')
                         ->label('Dusun')
                         ->options(
-                            HasilPsi::with('calon_penerima')
-                                ->get()
-                                ->pluck('calon_penerima.desa', 'calon_penerima.desa')
-                                ->unique()
-                                ->toArray()
+                            $opsiLaporan
                         )
                         ->required(),
                 ])
