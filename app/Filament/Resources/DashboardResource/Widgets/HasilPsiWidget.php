@@ -38,7 +38,7 @@ class HasilPsiWidget extends BaseWidget
                 Tables\Actions\Action::make('Lihat Laporan')
                     ->icon('heroicon-s-calculator')
                     ->color('primary')
-                    ->url(route('laporan.psi'))
+                    ->url(route('laporan.psi', ['dusun' => 'Semua']))
                     ->openUrlInNewTab(),
             ])
             ->query(
