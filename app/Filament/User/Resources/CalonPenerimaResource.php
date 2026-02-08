@@ -2,37 +2,33 @@
 
 namespace App\Filament\User\Resources;
 
-use Filament\Forms;
-use Filament\Tables;
-use Filament\Forms\Form;
-use Filament\Tables\Table;
-use App\Models\CalonPenerima;
-use Filament\Resources\Resource;
-use Filament\Tables\Filters\SelectFilter;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\User\Resources\CalonPenerimaResource\Pages;
-use App\Filament\User\Resources\CalonPenerimaResource\RelationManagers;
-use App\Filament\User\Resources\CalonPenerimaResource\RelationManagers\PenilaianRelationManager;
+use App\Models\CalonPenerima;
+use Filament\Forms;
+use Filament\Forms\Form;
+use Filament\Resources\Resource;
+use Filament\Tables;
+use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Table;
 
 class CalonPenerimaResource extends Resource
 {
     protected static ?string $model = CalonPenerima::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-user-group';
+
     protected static ?string $pluralLabel = 'Calon Penerima BLT';
+
     protected static ?string $singularLabel = 'Calon Penerima BLT';
 
     protected static ?string $navigationGroup = 'Penerima';
-    protected static ?int $sort = 1;
 
+    protected static ?int $sort = 1;
 
     public static function getNavigationBadge(): ?string
     {
         return static::getModel()::count();
     }
-
-
 
     public static function form(Form $form): Form
     {
@@ -45,6 +41,7 @@ class CalonPenerimaResource extends Resource
                     ->minLength(16)
                     ->numeric()
                     ->unique(ignoreRecord: true)
+
                     ->rule('digits:16'),
                 Forms\Components\TextInput::make('nama')
                     ->required()
@@ -80,16 +77,27 @@ class CalonPenerimaResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('nik')
+                    ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('nama')
+                    ->sortable()
+
                     ->searchable(),
                 Tables\Columns\TextColumn::make('no_kk')
+                    ->sortable()
+
                     ->searchable(),
                 Tables\Columns\TextColumn::make('desa')
+                    ->sortable()
+
                     ->searchable(),
                 Tables\Columns\TextColumn::make('kecamatan')
+                    ->sortable()
+
                     ->searchable(),
                 Tables\Columns\TextColumn::make('kabupaten')
+                    ->sortable()
+
                     ->searchable(),
                 Tables\Columns\TextColumn::make('tanggal_input')
                     ->date()

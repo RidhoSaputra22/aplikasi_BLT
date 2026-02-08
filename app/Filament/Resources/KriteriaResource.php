@@ -3,17 +3,13 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\KriteriaResource\Pages;
-use App\Filament\Resources\KriteriaResource\RelationManagers;
 use App\Filament\Resources\KriteriaResource\RelationManagers\SubKriteriaRelationManager;
 use App\Models\Kriteria;
-use App\Models\TipeKriteria;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class KriteriaResource extends Resource
 {
@@ -22,12 +18,10 @@ class KriteriaResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-list-bullet';
 
     protected static ?string $pluralLabel = 'Kriteria Penerima BLT';
+
     protected static ?string $singularLabel = 'Kriteria Penerima BLT';
 
     protected static ?string $navigationGroup = 'Kriteria';
-
-
-
 
     public static function form(Form $form): Form
     {
@@ -43,7 +37,7 @@ class KriteriaResource extends Resource
                     ->required()
                     ->options([
                         'Cost' => 'Cost',
-                        'Benefit' => 'Benefit'
+                        'Benefit' => 'Benefit',
                     ]),
 
             ]);
@@ -57,9 +51,11 @@ class KriteriaResource extends Resource
             )
             ->columns([
                 Tables\Columns\TextColumn::make('kode')
-                    ->searchable(),
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('nama_kriteria')
-                    ->searchable(),
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('tipe'),
                 Tables\Columns\TextColumn::make('sub_kriterias_count')
                     ->label('Jumlah Sub Kriteria')

@@ -3,28 +3,24 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\UserResource\Pages;
-use App\Filament\Resources\UserResource\RelationManagers;
 use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class UserResource extends Resource
 {
     protected static ?string $model = User::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-users';
+
     protected static ?string $pluralLabel = 'Petugas';
+
     protected static ?string $singularLabel = 'Petugas';
 
     protected static ?string $navigationGroup = 'Petugas';
-
-
-
 
     public static function form(Form $form): Form
     {
@@ -47,8 +43,10 @@ class UserResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
+                    ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email')
+                    ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email_verified_at')
                     ->dateTime()

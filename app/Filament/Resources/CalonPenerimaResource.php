@@ -2,34 +2,28 @@
 
 namespace App\Filament\Resources;
 
-use Filament\Forms;
-use Filament\Tables;
-use Filament\Forms\Form;
-use Filament\Tables\Table;
-use App\Models\CalonPenerima;
-use Filament\Resources\Resource;
-use Filament\Tables\Filters\SelectFilter;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\CalonPenerimaResource\Pages;
-use App\Filament\Resources\CalonPenerimaResource\RelationManagers;
-use App\Filament\Resources\CalonPenerimaResource\RelationManagers\PenilaianRelationManager;
+use App\Models\CalonPenerima;
+use Filament\Forms;
+use Filament\Forms\Form;
+use Filament\Resources\Resource;
+use Filament\Tables;
+use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Table;
 
 class CalonPenerimaResource extends Resource
 {
     protected static ?string $model = CalonPenerima::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-user-group';
+
     protected static ?string $pluralLabel = 'Calon Penerima BLT';
+
     protected static ?string $singularLabel = 'Calon Penerima BLT';
 
     protected static ?string $navigationGroup = 'Penerima';
+
     protected static ?int $sort = 1;
-
-
-
-
-
 
     public static function form(Form $form): Form
     {
@@ -77,17 +71,24 @@ class CalonPenerimaResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('nik')
+                    ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('nama')
+                    ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('no_kk')
+                    ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('desa')
                     ->label('Dusun')
+                    ->sortable()
+
                     ->searchable(),
                 Tables\Columns\TextColumn::make('kecamatan')
+                    ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('kabupaten')
+                    ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('tanggal_input')
                     ->date()

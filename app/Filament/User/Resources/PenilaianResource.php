@@ -2,25 +2,24 @@
 
 namespace App\Filament\User\Resources;
 
-use Filament\Forms;
-use Filament\Tables;
-use Filament\Forms\Form;
-use App\Models\Penilaian;
-use Filament\Tables\Table;
-use App\Models\SubKriteria;
-use App\Models\CalonPenerima;
-use Filament\Resources\Resource;
-use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\PenilaianResource\Pages;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use App\Filament\Resources\PenilaianResource\RelationManagers;
+use App\Models\CalonPenerima;
+use App\Models\Penilaian;
+use App\Models\SubKriteria;
+use Filament\Forms;
+use Filament\Forms\Form;
+use Filament\Resources\Resource;
+use Filament\Tables;
+use Filament\Tables\Table;
 
 class PenilaianResource extends Resource
 {
     protected static ?string $model = Penilaian::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-beaker';
+
     protected static ?string $pluralLabel = 'Penilaian Calon Penerima BLT';
+
     protected static ?string $singularLabel = 'Penilaian Calon Penerima BLT';
 
     protected static ?string $navigationGroup = 'PSI (Preference Selection Index)';
@@ -40,6 +39,7 @@ class PenilaianResource extends Resource
                         if ($dusun) {
                             return CalonPenerima::where('desa', $dusun)->pluck('nama', 'id');
                         }
+
                         return CalonPenerima::pluck('nama', 'id');
                     })
                     ->native(false)
@@ -57,12 +57,12 @@ class PenilaianResource extends Resource
                     ->required()
                     ->native(false)
                     ->reactive()
-                    ->disabled(fn(callable $get) => !$get('kriteria_id'))
+                    ->disabled(fn (callable $get) => ! $get('kriteria_id'))
                     ->options(function (callable $get) {
                         // return dd(SubKriteria::where('kriteria_id', $get('kriteria_id'))
                         //     ->pluck('nama_sub_kriteria', 'id'));
-                        return (SubKriteria::where('kriteria_id', $get('kriteria_id'))
-                            ->pluck('nama_sub_kriteria', 'id'));
+                        return SubKriteria::where('kriteria_id', $get('kriteria_id'))
+                            ->pluck('nama_sub_kriteria', 'id');
                     })
                     ->label('Sub Kriteria'),
             ]);

@@ -3,15 +3,12 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\HasilPsiResource\Pages;
-use App\Filament\Resources\HasilPsiResource\RelationManagers;
 use App\Models\HasilPsi;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class HasilPsiResource extends Resource
 {
@@ -20,13 +17,10 @@ class HasilPsiResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-clipboard-document-list';
 
     protected static ?string $pluralLabel = 'Hasil Perhitungan PSI';
+
     protected static ?string $singularLabel = 'Hasil Perhitungan PSI';
 
     protected static ?string $navigationGroup = 'PSI (Preference Selection Index)';
-
-
-
-
 
     public static function form(Form $form): Form
     {
@@ -62,6 +56,7 @@ class HasilPsiResource extends Resource
                     ->sortable()
                     ->numeric(4),
                 Tables\Columns\BadgeColumn::make('status')
+                    ->sortable()
                     ->colors([
                         'success' => 'Layak',
                         'danger' => 'Tidak Layak',
