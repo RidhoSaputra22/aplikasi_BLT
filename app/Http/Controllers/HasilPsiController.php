@@ -3,10 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\HasilPsi;
-use Spatie\LaravelPdf\Enums\Unit;
 use Spatie\LaravelPdf\Facades\Pdf;
-use App\Http\Requests\StoreHasilPsiRequest;
-use App\Http\Requests\UpdateHasilPsiRequest;
 
 class HasilPsiController extends Controller
 {
@@ -28,9 +25,10 @@ class HasilPsiController extends Controller
         }
         // Pisahkan data berdasarkan desa
         $hasilPsi = $hasilPsiData->groupBy('calon_penerima.desa');
+
         return Pdf::view('pdf.laporan-psi', compact('hasilPsi'))
             ->format('A4') // Or your desired paper size
             ->margins(4, 4, 3, 3) // Top, Right, Bottom, Left (in cm) - This likely won't directly correspond to margins
-            ->name('Laporan_PSI ' . now()->format('Y-m-d') . '.pdf');
+            ->name('Laporan_PSI '.now()->format('Y-m-d').'.pdf');
     }
 }
