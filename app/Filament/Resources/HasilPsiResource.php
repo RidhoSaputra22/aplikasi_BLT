@@ -43,9 +43,7 @@ class HasilPsiResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-            ->query(
-                HasilPsi::with('calon_penerima')->orderByDesc('nilai_preferensi')
-            )
+            ->defaultSort('nilai_preferensi', 'desc')
             ->columns([
                 Tables\Columns\TextColumn::make('calon_penerima.nama')
                     ->label('Nama Calon')
@@ -56,7 +54,6 @@ class HasilPsiResource extends Resource
                     ->sortable()
                     ->numeric(4),
                 Tables\Columns\BadgeColumn::make('status')
-                    ->sortable()
                     ->colors([
                         'success' => 'Layak',
                         'danger' => 'Tidak Layak',
