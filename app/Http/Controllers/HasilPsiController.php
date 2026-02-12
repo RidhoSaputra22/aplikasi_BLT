@@ -9,7 +9,9 @@ class HasilPsiController extends Controller
 {
     public function generatePdf($dusun)
     {
-        if (empty($dusun)) abort(404, 'Dusun tidak boleh kosong.');
+        if (empty($dusun)) {
+            abort(404, 'Dusun tidak boleh kosong.');
+        }
 
         $hasilPsiData = $dusun === 'Semua'
             ? HasilPsi::with('calon_penerima')->get()
@@ -57,11 +59,11 @@ class HasilPsiController extends Controller
                 }
 
                 // Margin yang pasti (mm), biar konsisten
-                $browsershot->margins('4mm', '4mm', '3mm', '3mm');
+                $browsershot->margins(4, 4, 3, 3);
 
                 // Kalau perlu print background:
                 // $browsershot->showBackground();
             })
-            ->name('Laporan_PSI ' . now()->format('Y-m-d') . '.pdf');
+            ->name('Laporan_PSI '.now()->format('Y-m-d').'.pdf');
     }
 }
