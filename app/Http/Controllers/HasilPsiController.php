@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\HasilPsi;
-use Spatie\LaravelPdf\Facades\Pdf;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class HasilPsiController extends Controller
 {
@@ -21,36 +21,11 @@ class HasilPsiController extends Controller
 
         $hasilPsi = $hasilPsiData->groupBy('calon_penerima.desa');
 
-        return Pdf::view('pdf.laporan-psi', compact('hasilPsi'))
-            ->format('A4')
-            ->withBrowsershot(function ($browsershot) {
+        $pdf = Pdf::loadView('pdf.laporan-psi', compact('hasilPsi'))
+            ->setPaper('A4', 'portrait');
 
-                // === Tambahan: Node & NPM binary (shared hosting) ===
-                if ($node = env('BROWSERSHOT_NODE_BINARY')) {
-                    $browsershot->setNodeBinary($node);
-                }
-                if ($npm = env('BROWSERSHOT_NPM_BINARY')) {
-                    $browsershot->setNpmBinary($npm);
-                }
+        $filename = 'Laporan_PSI_' . now()->format('Y-m-d') . '.pdf';
 
-                // Chrome path (punya kamu)
-                $browsershot->setChromePath(config('browsershot.chrome_path'));
-
-                $isWindows = PHP_OS_FAMILY === 'Windows';
-
-                if ($isWindows) {
-                    $browsershot->addChromiumArguments(['--disable-gpu']);
-                } else {
-                    $browsershot->addChromiumArguments([
-                        '--no-sandbox',
-                        '--disable-setuid-sandbox',
-                        '--disable-dev-shm-usage',
-                    ]);
-                }
-
-                $browsershot->margins(4, 4, 3, 3);
-            })
-
-            ->name('Laporan_PSI '.now()->format('Y-m-d').'.pdf');
+        return $pdf->download($filename);
     }
 }
