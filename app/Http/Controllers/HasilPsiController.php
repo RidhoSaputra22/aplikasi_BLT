@@ -26,10 +26,10 @@ class HasilPsiController extends Controller
             ->withBrowsershot(function ($browsershot) {
 
                 // === Tambahan: Node & NPM binary (shared hosting) ===
-                if ($node = config('browsershot.node_binary')) {
+                if ($node = env('BROWSERSHOT_NODE_BINARY')) {
                     $browsershot->setNodeBinary($node);
                 }
-                if ($npm = config('browsershot.npm_binary')) {
+                if ($npm = env('BROWSERSHOT_NPM_BINARY')) {
                     $browsershot->setNpmBinary($npm);
                 }
 
