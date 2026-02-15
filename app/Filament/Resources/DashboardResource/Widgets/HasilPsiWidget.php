@@ -4,11 +4,11 @@ namespace App\Filament\Resources\DashboardResource\Widgets;
 
 use App\Models\CalonPenerima;
 use App\Models\HasilPsi;
+use App\Services\HasilPsiService;
 use Filament\Notifications\Notification;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Widgets\TableWidget as BaseWidget;
-use Illuminate\Support\Facades\Artisan;
 
 class HasilPsiWidget extends BaseWidget
 {
@@ -26,7 +26,7 @@ class HasilPsiWidget extends BaseWidget
                     ->icon('heroicon-s-calculator')
                     ->color('primary')
                     ->action(function () {
-                        Artisan::call('psi:hitung');
+                        app(HasilPsiService::class)->hitung();
 
                         Notification::make()
                             ->title('Perhitungan PSI Selesai')

@@ -2,13 +2,13 @@
 
 namespace App\Filament\Resources\HasilPsiResource\Pages;
 
+use App\Filament\Resources\HasilPsiResource;
 use App\Models\HasilPsi;
+use App\Services\HasilPsiService;
 use Filament\Actions\Action;
 use Filament\Forms\Components\Select;
-use Illuminate\Support\Facades\Artisan;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ListRecords;
-use App\Filament\Resources\HasilPsiResource;
 
 class ListHasilPsis extends ListRecords
 {
@@ -17,7 +17,7 @@ class ListHasilPsis extends ListRecords
     protected function getHeaderActions(): array
     {
 
-        $opsiLaporan =  HasilPsi::with('calon_penerima')
+        $opsiLaporan = HasilPsi::with('calon_penerima')
             ->get()
             ->pluck('calon_penerima.desa', 'calon_penerima.desa')
             ->unique()
@@ -30,7 +30,7 @@ class ListHasilPsis extends ListRecords
                 ->icon('heroicon-s-calculator')
                 ->color('primary')
                 ->action(function () {
-                    Artisan::call('psi:hitung');
+                    app(HasilPsiService::class)->hitung();
                     Notification::make()
                         ->title('Perhitungan PSI Selesai')
                         ->success()
@@ -53,9 +53,10 @@ class ListHasilPsis extends ListRecords
                 ->action(function ($data) {
                     $dusun = $data['dusun'];
                     $url = route('laporan.psi', ['dusun' => $dusun]);
+
                     return redirect($url);
                 })
-                ->openUrlInNewTab()
+                ->openUrlInNewTab(),
         ];
     }
 }
