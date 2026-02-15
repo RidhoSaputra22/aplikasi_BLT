@@ -25,32 +25,22 @@ class HasilPsiController extends Controller
             ->format('A4')
             ->withBrowsershot(function ($browsershot) {
 
-                // Deteksi OS
-                $isWindows = strtoupper(substr(PHP_OS_FAMILY, 0, 3)) === 'WIN'; // atau: PHP_OS_FAMILY === 'Windows'
-                // (opsional) kalau mau spesifik Linux:
-                // $isLinux = PHP_OS_FAMILY === 'Linux';
+                // === Tambahan: Node & NPM binary (shared hosting) ===
+                if ($node = config('browsershot.node_binary')) {
+                    $browsershot->setNodeBinary($node);
+                }
+                if ($npm = config('browsershot.npm_binary')) {
+                    $browsershot->setNpmBinary($npm);
+                }
+
+                // Chrome path (punya kamu)
+                $browsershot->setChromePath(config('browsershot.chrome_path'));
+
+                $isWindows = PHP_OS_FAMILY === 'Windows';
 
                 if ($isWindows) {
-                    // Windows: biasanya pakai Chrome/Edge default install path (set via .env)
-                    // Contoh .env:
-                    // BROWSERSHOT_CHROME_PATH="C:\Program Files\Google\Chrome\Application\chrome.exe"
-                    // atau Edge:
-                    // BROWSERSHOT_CHROME_PATH="C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
-
-                    $browsershot->setChromePath(env('BROWSERSHOT_CHROME_PATH'));
-
-                    // args biasanya tidak perlu di Windows
-                    $browsershot->addChromiumArguments([
-                        '--disable-gpu',
-                    ]);
+                    $browsershot->addChromiumArguments(['--disable-gpu']);
                 } else {
-                    // Linux: biasanya chromium/chrome + perlu sandbox flags di server/container
-                    // Contoh .env:
-                    // BROWSERSHOT_CHROME_PATH=/usr/bin/chromium-browser
-                    // atau /usr/bin/chromium atau /usr/bin/google-chrome
-
-                    $browsershot->setChromePath(env('BROWSERSHOT_CHROME_PATH'));
-
                     $browsershot->addChromiumArguments([
                         '--no-sandbox',
                         '--disable-setuid-sandbox',
@@ -58,12 +48,9 @@ class HasilPsiController extends Controller
                     ]);
                 }
 
-                // Margin yang pasti (mm), biar konsisten
                 $browsershot->margins(4, 4, 3, 3);
-
-                // Kalau perlu print background:
-                // $browsershot->showBackground();
             })
+
             ->name('Laporan_PSI '.now()->format('Y-m-d').'.pdf');
     }
 }
