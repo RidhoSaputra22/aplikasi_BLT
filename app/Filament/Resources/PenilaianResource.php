@@ -2,25 +2,24 @@
 
 namespace App\Filament\Resources;
 
-use Filament\Forms;
-use Filament\Tables;
-use Filament\Forms\Form;
-use App\Models\Penilaian;
-use Filament\Tables\Table;
-use App\Models\SubKriteria;
-use App\Models\CalonPenerima;
-use Filament\Resources\Resource;
-use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\PenilaianResource\Pages;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use App\Filament\Resources\PenilaianResource\RelationManagers;
+use App\Models\CalonPenerima;
+use App\Models\Penilaian;
+use App\Models\SubKriteria;
+use Filament\Forms;
+use Filament\Forms\Form;
+use Filament\Resources\Resource;
+use Filament\Tables;
+use Filament\Tables\Table;
 
 class PenilaianResource extends Resource
 {
     protected static ?string $model = Penilaian::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-beaker';
+
     protected static ?string $pluralLabel = 'Penilaian Calon Penerima BLT';
+
     protected static ?string $singularLabel = 'Penilaian Calon Penerima BLT';
 
     protected static ?string $navigationGroup = 'PSI (Preference Selection Index)';
@@ -29,23 +28,44 @@ class PenilaianResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('dusun')
-                    ->options(CalonPenerima::pluck('desa', 'desa')->unique())
-                    ->native(false)
-                    ->preload()
-                    ->label('Dusun'),
                 Forms\Components\Select::make('calon_penerima_id')
-                    ->options(function (callable $get) {
-                        $dusun = $get('dusun');
-                        if ($dusun) {
-                            return CalonPenerima::where('desa', $dusun)->pluck('nama', 'id');
-                        }
-                        return CalonPenerima::pluck('nama', 'id');
-                    })
+                    ->label('NIK / Nama Calon Penerima')
+                    ->searchable()
                     ->native(false)
                     ->preload()
-                    ->searchable()
-                    ->label('Nama Calon Penerima'),
+                    ->reactive()
+                    ->getSearchResultsUsing(function (string $search) {
+                        return CalonPenerima::where('nik', 'like', "%{$search}%")
+                            ->orWhere('nama', 'like', "%{$search}%")
+                            ->limit(20)
+                            ->get()
+                            ->mapWithKeys(fn ($item) => [
+                                $item->id => "{$item->nik} — {$item->nama}",
+                            ])
+                            ->toArray();
+                    })
+                    ->getOptionLabelUsing(function ($value) {
+                        $cp = CalonPenerima::find($value);
+
+                        return $cp ? "{$cp->nik} — {$cp->nama}" : $value;
+                    })
+                    ->afterStateUpdated(function ($state, callable $set) {
+                        $cp = CalonPenerima::find($state);
+                        $set('dusun_display', $cp?->desa ?? '');
+                    })
+                    ->placeholder('Ketik NIK atau nama calon penerima...')
+                    ->columnSpanFull(),
+                Forms\Components\TextInput::make('dusun_display')
+                    ->label('Dusun')
+                    ->readOnly()
+                    ->disabled()
+                    ->dehydrated(false)
+                    ->placeholder('Otomatis terisi setelah pilih calon penerima')
+                    ->afterStateHydrated(function ($component, $state, callable $get) {
+                        $cp = CalonPenerima::find($get('calon_penerima_id'));
+                        $component->state($cp?->desa ?? '');
+                    })
+                    ->columnSpanFull(),
                 Forms\Components\Select::make('kriteria_id')
                     ->required()
                     ->native(false)
@@ -57,12 +77,12 @@ class PenilaianResource extends Resource
                     ->required()
                     ->native(false)
                     ->reactive()
-                    ->disabled(fn(callable $get) => !$get('kriteria_id'))
+                    ->disabled(fn (callable $get) => ! $get('kriteria_id'))
                     ->options(function (callable $get) {
                         // return dd(SubKriteria::where('kriteria_id', $get('kriteria_id'))
                         //     ->pluck('nama_sub_kriteria', 'id'));
-                        return (SubKriteria::where('kriteria_id', $get('kriteria_id'))
-                            ->pluck('nama_sub_kriteria', 'id'));
+                        return SubKriteria::where('kriteria_id', $get('kriteria_id'))
+                            ->pluck('nama_sub_kriteria', 'id');
                     })
                     ->label('Sub Kriteria'),
             ]);
